@@ -1,2 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+.ml-2 {
+  margin-left: 10px;
+}
+
+.mr-2 {
+  margin-right: 10px;
+}
+
+.basic-back {
+  background: #f2fff6;
+}
+
+.mb-unset {
+  margin-bottom: unset;
+}
+
+.container {
+  border-left: 1px solid;
+  border-right: 1px solid;
+  height: 100%;
+}
+
+html, body, app-root {
+  height: 100%;
+}
