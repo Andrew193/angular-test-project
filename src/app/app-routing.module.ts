@@ -6,9 +6,9 @@ import {BasicComponent} from "./basic/basic.component";
 import {AppComponent} from "./app.component";
 import {ListsComponent} from "./lists/lists.component";
 
-const routes: Routes = [
-  {path: '', component: BasicComponent},
-  {path: 'lists', component: ListsComponent},
+export const routes: Routes = [
+  {path: '', component: BasicComponent, title: "Dashboard"},
+  {path: 'lists', component: ListsComponent, title: "Lists"},
   {path: '**', component: Page404Component}
 ];
 
