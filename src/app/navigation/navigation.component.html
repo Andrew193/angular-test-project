@@ -4,8 +4,7 @@
       <a
         routerLink="/{{link.path}}"
         class="nav-link"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{exact:true}"
+        [ngClass]="{'active': isLinkActive(false, link.path!)}"
       >{{link.title}}</a>
     </li>
   </ul>

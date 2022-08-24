@@ -5,10 +5,18 @@ import {NgModule} from "@angular/core";
 import {BasicComponent} from "./basic/basic.component";
 import {AppComponent} from "./app.component";
 import {ListsComponent} from "./lists/lists.component";
+import {SelectedListItemComponent} from "./selected-list-item/selected-list-item.component";
 
 export const routes: Routes = [
   {path: '', component: BasicComponent, title: "Dashboard"},
-  {path: 'lists', component: ListsComponent, title: "Lists"},
+  {
+    path: 'lists',
+    title: "Lists",
+    children: [
+      {path: '', component: ListsComponent},
+      {path: ':id', component: SelectedListItemComponent}
+    ]
+  },
   {path: '**', component: Page404Component}
 ];
 

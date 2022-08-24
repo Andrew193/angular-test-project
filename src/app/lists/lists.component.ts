@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
 
 export type ListItemType = {
   id: number,
@@ -17,7 +18,11 @@ export class ListsComponent implements OnInit {
   sortByIdOrder = false;
   sortByIdName = false;
 
-  constructor() {
+  constructor(private router: Router) {
+  }
+
+  showDetails(id: number): void {
+    this.router.navigate([`/lists/${id}`]);
   }
 
   ngOnInit(): void {
