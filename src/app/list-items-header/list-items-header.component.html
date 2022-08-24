@@ -1,4 +1,11 @@
 <div class="d-flex mb-4 basic-back p-2">
-  <p class="w-25 mb-unset text-center" style="border-right: 1px solid">№</p>
-  <p class="w-75 mb-unset text-center">Item name</p>
+  <p
+    class="w-25 mb-unset text-center cursor-pointer"
+    style="border-right: 1px solid"
+    (click)="sortById()"
+  >№ <span class="sort">{{sortByIdOrder ? "asc" : "desc"}}</span></p>
+  <p
+    class="w-75 mb-unset text-center cursor-pointer"
+    (click)="sortByName()"
+  >Item name <span class="sort">{{sortByIdName ? "asc" : "desc"}}</span></p>
 </div>

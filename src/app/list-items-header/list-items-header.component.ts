@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {voidReturnVoidPassFunction} from "../basic-types";
 
 @Component({
   selector: 'app-list-items-header',
@@ -7,7 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListItemsHeaderComponent implements OnInit {
 
-  constructor() { }
+  @Input("sortById") sortById: voidReturnVoidPassFunction = () => {
+  }
+  @Input("sortByName") sortByName: voidReturnVoidPassFunction = () => {
+  }
+  @Input("sortByIdOrder") sortByIdOrder: boolean | undefined;
+  @Input("sortByIdName") sortByIdName: boolean | undefined;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

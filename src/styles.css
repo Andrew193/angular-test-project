@@ -23,6 +23,10 @@
   height: 100%;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 html, body, app-root {
   height: 100%;
 }
