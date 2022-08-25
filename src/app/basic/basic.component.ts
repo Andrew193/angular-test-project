@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-basic',
@@ -6,7 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./basic.component.css']
 })
 export class BasicComponent implements OnInit {
-  constructor() { }
+  constructor(private route: Router) { }
+
+  redirectToAllItems() {
+    this.route.navigate(['/lists']);
+  }
+
+  createNewItem() {
+    this.route.navigate(['/lists/new']);
+  }
 
   ngOnInit(): void {
   }
