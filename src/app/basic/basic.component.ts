@@ -14,7 +14,7 @@ export class BasicComponent implements OnInit {
   }
 
   createNewItem() {
-    this.route.navigate(['/lists/new']);
+    this.route.navigate(['/lists/crud/new']);
   }
 
   ngOnInit(): void {

@@ -1,0 +1,35 @@
+<div *ngIf="selectedListID else createNewItem">
+  <h3 class="basic-back p-1 text-center">Selected list data</h3>
+  <input>
+  <input>
+</div>
+
+
+<ng-template #createNewItem>
+  <h3 class="basic-back p-1 text-center">Create new item</h3>
+
+  <form
+    [formGroup]="formik"
+    (ngSubmit)="onSubmit()"
+    class="d-flex flex-column"
+  >
+    <label for="name" >List name: </label>
+    <input id="name" type="text" formControlName="name" class="outline-none">
+    <app-error-component
+      [field]="{formikConfig:formik.controls.name, name:'name'}"
+      [getFieldErrors]="getFieldErrors"
+    ></app-error-component>
+
+    <label for="description">List description: </label>
+    <input id="description" type="textarea" formControlName="description" class="outline-none">
+    <app-error-component
+      [field]="{formikConfig:formik.controls.description, name:'description'}"
+      [getFieldErrors]="getFieldErrors"
+    ></app-error-component>
+
+    <label for="tags">List tags: </label>
+    <input id="tags" type="text" formControlName="tags" class="outline-none mb-4">
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</ng-template>

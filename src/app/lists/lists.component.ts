@@ -22,7 +22,7 @@ export class ListsComponent implements OnInit {
   }
 
   showDetails(id: number): void {
-    this.router.navigate([`/lists/${id}`]);
+    this.router.navigate([`/lists/crud/${id}`]);
   }
 
   ngOnInit(): void {
