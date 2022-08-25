@@ -1,0 +1,3 @@
+<span *ngIf="field.formikConfig['invalid'] && field.formikConfig['touched']" style="color: #ff6363">
+{{getFieldErrors(field.name)[0]!.errorMessage}}
+</span>
