@@ -13,23 +13,38 @@
     (ngSubmit)="onSubmit()"
     class="d-flex flex-column"
   >
-    <label for="name" >List name: </label>
-    <input id="name" type="text" formControlName="name" class="outline-none">
     <app-error-component
       [field]="{formikConfig:formik.controls.name, name:'name'}"
       [getFieldErrors]="getFieldErrors"
-    ></app-error-component>
+    >
+      <label for="name">List name: </label>
+      <input id="name" type="text" formControlName="name" class="outline-none" #fieldInput>
+    </app-error-component>
 
-    <label for="description">List description: </label>
-    <input id="description" type="textarea" formControlName="description" class="outline-none">
     <app-error-component
       [field]="{formikConfig:formik.controls.description, name:'description'}"
       [getFieldErrors]="getFieldErrors"
-    ></app-error-component>
+    >
+      <label for="description">List description: </label>
+      <input id="description" type="textarea" formControlName="description" class="outline-none" #fieldInput>
+    </app-error-component>
 
     <label for="tags">List tags: </label>
     <input id="tags" type="text" formControlName="tags" class="outline-none mb-4">
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary" [disabled]="!formik.valid">Submit</button>
   </form>
+
+  <ng-container *ngTemplateOutlet="(formik.value.name || formik.value.description || formik.value.tags)
+  && itemPreview"></ng-container>
+
+  <ng-template #itemPreview>
+    <h5 class="text-center">New item preview</h5>
+    <p class="basic-back list-item mb-unset d-flex p-2 mt-3">
+      <span class="w-25 text-center span-overflow" style="border-right: 1px solid">{{formik.value.name}}</span>
+      <span class="w-50 text-center span-overflow" style="border-right: 1px solid">{{formik.value.description}}</span>
+      <span class="w-25 text-center span-overflow">{{formik.value.tags}}</span>
+    </p>
+  </ng-template>
+
 </ng-template>

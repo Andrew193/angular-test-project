@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
@@ -20,15 +20,7 @@ function getErrorMessage(errorMessage: string, config: any) {
 
 export class CrudListItemComponent implements OnInit {
   selectedListID: number = 0;
-  formik = new FormGroup({
-    name: new FormControl("", [
-      Validators.required,
-      Validators.minLength(15),
-      Validators.maxLength(40)
-    ]),
-    description: new FormControl("", Validators.maxLength(100)),
-    tags: new FormControl("")
-  });
+  formik: any;
 
   constructor(private route: ActivatedRoute) {
   }
@@ -36,6 +28,7 @@ export class CrudListItemComponent implements OnInit {
   ngOnInit(): void {
     const idFromRoute = +this.route.snapshot.params['id'];
     this.selectedListID = isNaN(idFromRoute) ? 0 : idFromRoute;
+    this.initCrudForm();
   }
 
   initCrudForm() {
@@ -51,14 +44,16 @@ export class CrudListItemComponent implements OnInit {
   }
 
   onSubmit() {
-    if(this.formik.status === "VALID") {
-     alert("Done")
+    if (this.formik.status === "VALID") {
+      alert("Done")
+      console.log(this.formik)
     }
   }
 
   public getFieldErrors = (field: string): errorMessagesType => {
     type controlsType = { [key: string]: any }
     const controls: controlsType = this.formik.controls;
+
     return Object.entries(controls[field].touched ? controls[field].errors : {})
       ?.map((error) => {
         return {errorName: error[0], errorMessage: getErrorMessage(error[0], error[1])}

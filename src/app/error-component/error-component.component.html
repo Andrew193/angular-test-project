@@ -1,3 +1,8 @@
-<span *ngIf="field.formikConfig['invalid'] && field.formikConfig['touched']" style="color: #ff6363">
-{{getFieldErrors(field.name)[0]!.errorMessage}}
+<ng-content></ng-content>
+<span *ngIf="_fieldConfig['invalid'] && _fieldConfig['touched'] else dropErrorCover" style="color: #ff6363">
+{{_getFieldErrors(_fieldName)[0]!.errorMessage}}
 </span>
+
+<ng-template #dropErrorCover>
+  {{dropError()}}
+</ng-template>

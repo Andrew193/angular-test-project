@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router} from "@angular/router";
 
 export type ListItemType = {
@@ -10,7 +10,8 @@ export type ListItemType = {
 @Component({
   selector: 'app-lists',
   templateUrl: './lists.component.html',
-  styleUrls: ['./lists.component.css']
+  styleUrls: ['./lists.component.css'],
+  // encapsulation: ViewEncapsulation.None,
 })
 
 export class ListsComponent implements OnInit {
