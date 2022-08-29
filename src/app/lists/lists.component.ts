@@ -1,5 +1,6 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
+import {ListService} from "../services/list-service/list-service.service";
 
 export type ListItemType = {
   id: number,
@@ -19,7 +20,12 @@ export class ListsComponent implements OnInit {
   sortByIdOrder = false;
   sortByIdName = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private listService: ListService) {
+  }
+
+  getListItems(): void {
+    this.listService.getItems()
+      .subscribe(data => this.items = data)
   }
 
   showDetails(id: number): void {
@@ -27,14 +33,14 @@ export class ListsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.items = [{id: 1, name: "test"}, {id: 2, name: "rest"}];
+    this.getListItems();
     this.sortByIdOrder = true;
     this.sortByIdName = true;
   }
 
   public sortById = (): void => {
+    this.sortByIdOrder = !this.sortByIdOrder;
     this.items = this.items!.sort((a, b) => {
-      this.sortByIdOrder = !this.sortByIdOrder;
       return this.sortByIdOrder ? a.id - b.id : b.id - a.id;
     })
   }

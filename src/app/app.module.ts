@@ -4,14 +4,15 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
 import {AppRoutingModule, routingComponents} from "./app-routing.module";
 import {ReactiveFormsModule} from "@angular/forms";
-import { ErrorComponentComponent } from './error-component/error-component.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
-  declarations: [routingComponents, ErrorComponentComponent],
+  declarations: [routingComponents],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {ListService} from "../services/list-service/list-service.service";
+import {LoggerService, LogTypes} from "../services/logger-service/logger.service";
+import {PopupService} from "../services/popup/popup.service";
 
 export type errorMessagesType = { errorName: string; errorMessage: string | undefined; }[];
 
@@ -22,7 +25,8 @@ export class CrudListItemComponent implements OnInit {
   selectedListID: number = 0;
   formik: any;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private listService: ListService,
+              private logger: LoggerService, public popupService:PopupService) {
   }
 
   ngOnInit(): void {
@@ -45,8 +49,15 @@ export class CrudListItemComponent implements OnInit {
 
   onSubmit() {
     if (this.formik.status === "VALID") {
-      alert("Done")
-      console.log(this.formik)
+      const currentItemsLength = this.listService.getItemsLength();
+
+      this.listService.addItem({
+        ...this.formik.value,
+        id: currentItemsLength + 1
+      })
+
+      this.logger.logMessage(this.logger.getLogConfig("Item has been added", LogTypes.LOG));
+      this.popupService.showModal("Test");
     }
   }
 

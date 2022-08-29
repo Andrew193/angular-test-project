@@ -1,0 +1,7 @@
+<div *ngIf="logger.getMessagesLength()">
+  <div class="container">
+    <h5>Resent actions</h5>
+    <li *ngFor="let log of logger.getAllMessages()">{{log.message}}</li>
+  </div>
+</div>
+
