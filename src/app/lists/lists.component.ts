@@ -24,8 +24,7 @@ export class ListsComponent implements OnInit {
   }
 
   getListItems(): void {
-    this.listService.getItems()
-      .subscribe(data => this.items = data)
+    this.listService.fetchItems().subscribe(() => this.items = this.listService.getItems())
   }
 
   showDetails(id: number): void {

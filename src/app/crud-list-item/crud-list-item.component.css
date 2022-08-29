@@ -1,0 +1,11 @@
+.tags span{
+  background: #f2fff6;
+  padding: 2px;
+  margin: 3px;
+  flex: 1 0;
+  text-align: center;
+}
+
+.hide {
+  display: none;
+}

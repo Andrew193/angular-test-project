@@ -10,7 +10,7 @@ import {Subject, takeUntil} from "rxjs";
   animations: [
     trigger('state', [
       transition('* => *', animate('500ms ease')),
-      state('opened', style({transform: 'translateY(0%)', top: '100px'})),
+      state('opened', style({ height: '99%', background: '#f0f8ff87'})),
       state('void, closed', style({transform: 'translateY(100%)'})),
     ])
   ],
