@@ -53,7 +53,6 @@ export class ErrorComponentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.field, this.fieldInput)
   }
 
 }

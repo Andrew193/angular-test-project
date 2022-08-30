@@ -1,15 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ListService} from "../services/list-service/list-service.service";
 import {LoggerService, LogTypes} from "../services/logger-service/logger.service";
 import {PopupService} from "../services/popup/popup.service";
 import {ListItemType} from "../lists/lists.component";
+import {BehaviorSubject} from "rxjs";
 
 export type errorMessagesType = { errorName: string; errorMessage: string | undefined; }[];
-type ArrElement<ArrType> = ArrType extends readonly (infer ElementType)[]
-  ? ElementType
-  : never;
 
 function getErrorMessage(errorMessage: string, config: any) {
   return {
@@ -34,14 +32,17 @@ export class CrudListItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const idFromRoute = +this.route.snapshot.params['id'];
-    this.selectedListID = isNaN(idFromRoute) ? 0 : idFromRoute;
+    this.route.params.subscribe((data) => {
+      const idFromRoute = data['id'];
+      this.selectedListID = isNaN(idFromRoute) ? 0 : +idFromRoute;
+      this.setupComponent(this.selectedListID);
+    });
+  }
 
-    if (this.selectedListID) {
-      this.listService.fetchItemById(this.selectedListID)
-        .subscribe((selectedItem) => {
-          this.initCrudForm(selectedItem[0] || null);
-        })
+  setupComponent(selectedListID: number) {
+    if (selectedListID) {
+      this.listService.fetchItemById(selectedListID)
+        .subscribe((selectedItem) => this.initCrudForm(selectedItem[0] || null))
     } else {
       this.initCrudForm();
     }

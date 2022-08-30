@@ -15,7 +15,7 @@ export class NavigationComponent implements OnInit {
   constructor(public router: Router) {
   }
 
-  isLinkActive(exact: boolean, src: string) {
+  isLinkActive(exact: boolean, src: string): boolean {
     const srcToCheck = src === "" ? "/" : `/${src}`;
     const routerSrc = this.router.url;
 
@@ -33,6 +33,12 @@ export class NavigationComponent implements OnInit {
       const [start, end] = getStartEnd(routerSrc, srcToCheck);
       return routerSrc[end + 1] === "/" && !start ? routerSrc.includes(srcToCheck) : false
     }
+  }
+
+  isExactPath(path: string): boolean {
+    return !!{
+      "": true,
+    }[path]
   }
 
   ngOnInit(): void {

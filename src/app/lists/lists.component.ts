@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {ListService} from "../services/list-service/list-service.service";
 
@@ -24,6 +24,7 @@ export class ListsComponent implements OnInit {
   }
 
   getListItems(): void {
+  //  this.listService.testFetchItemsWithoutCover().subscribe((data) => this.items = data)
     this.listService.fetchItems().subscribe(() => this.items = this.listService.getItems())
   }
 
