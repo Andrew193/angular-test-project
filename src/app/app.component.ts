@@ -12,7 +12,11 @@ export class AppComponent {
   constructor(private popupService: PopupService) {
   }
 
-  closePopup() {
-    this.popupService.hideModal();
+  yesPopup() {
+    this.popupService.hideModal(true);
+  }
+
+  noPopup() {
+    this.popupService.hideModal(false);
   }
 }

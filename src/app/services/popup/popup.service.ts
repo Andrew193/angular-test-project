@@ -6,6 +6,7 @@ import {BehaviorSubject, Observable, of} from "rxjs";
 })
 export class PopupService {
   private isOpened: boolean = false;
+  private reaction: boolean = false;
   private message: string = "";
   _isOpenedUpdater$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isOpened);
 
@@ -21,15 +22,26 @@ export class PopupService {
     return of(this.isOpened)
   }
 
-  showModal(message: string): void {
+  showModal(message: string): Promise<boolean> {
     this.message = message;
     this.isOpened = true;
     this._isOpenedUpdater$.next(this.isOpened);
+
+    return new Promise((resolve) => {
+      this._isOpenedUpdater$.subscribe(() => {
+          if (this.reaction) {
+            resolve(true)
+            setTimeout(() => this.reaction = false)
+          }
+        }
+      )
+    })
   }
 
-  hideModal() {
+  hideModal(reaction: boolean) {
     this.message = "";
     this.isOpened = false;
+    this.reaction = reaction;
     this._isOpenedUpdater$.next(this.isOpened);
   }
 

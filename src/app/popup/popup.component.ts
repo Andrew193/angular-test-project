@@ -37,15 +37,20 @@ export class PopupComponent implements OnDestroy, OnInit {
 
   @HostBinding("@state") state: 'opened' | 'closed' = 'closed';
 
-  @Output() closed = new EventEmitter<void>();
+  @Output() yes = new EventEmitter<void>();
+  @Output() no = new EventEmitter<void>();
 
-  closeModal() {
-    this.closed.emit();
+  apply() {
+    this.yes.emit();
+  }
+
+  reject() {
+    this.no.emit();
   }
 
   ngOnDestroy() {
     this.state = "closed"
     this.unsubscribe$.next(true);
-    this.unsubscribe$.complete();
+    this.unsubscribe$.unsubscribe();
   }
 }

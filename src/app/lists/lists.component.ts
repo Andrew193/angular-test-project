@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {ListService} from "../services/list-service/list-service.service";
+import {Subscription} from "rxjs";
 
 export type ListItemType = {
   id: number,
@@ -15,21 +16,26 @@ export type ListItemType = {
   // encapsulation: ViewEncapsulation.None,
 })
 
-export class ListsComponent implements OnInit {
+export class ListsComponent implements OnInit, OnDestroy {
   items: ListItemType[] = [];
   sortByIdOrder = false;
   sortByIdName = false;
+  private itemsSubscription: Subscription = new Subscription();
 
   constructor(private router: Router, private listService: ListService) {
   }
 
   getListItems(): void {
-  //  this.listService.testFetchItemsWithoutCover().subscribe((data) => this.items = data)
-    this.listService.fetchItems().subscribe(() => this.items = this.listService.getItems())
+    //  this.listService.testFetchItemsWithoutCover().subscribe((data) => this.items = data)
+    this.itemsSubscription = this.listService.fetchItems().subscribe(() => this.items = this.listService.getItems())
+  }
+
+  ngOnDestroy() {
+    this.itemsSubscription.unsubscribe()
   }
 
   showDetails(id: number): void {
-    this.router.navigate([`/lists/crud/${id}`]);
+    this.router.navigate(["/lists/crud", id]);
   }
 
   ngOnInit(): void {

@@ -5,7 +5,7 @@ import {ListService} from "../services/list-service/list-service.service";
 import {LoggerService, LogTypes} from "../services/logger-service/logger.service";
 import {PopupService} from "../services/popup/popup.service";
 import {ListItemType} from "../lists/lists.component";
-import {BehaviorSubject} from "rxjs";
+import {Subscription} from "rxjs";
 
 export type errorMessagesType = { errorName: string; errorMessage: string | undefined; }[];
 
@@ -23,30 +23,42 @@ function getErrorMessage(errorMessage: string, config: any) {
   styleUrls: ['./crud-list-item.component.css']
 })
 
-export class CrudListItemComponent implements OnInit {
+export class CrudListItemComponent implements OnInit, OnDestroy {
   selectedListID: number = 0;
   formik: any;
+  private paramsSubscription: Subscription[] = [];
 
   constructor(private route: ActivatedRoute, private listService: ListService,
               private logger: LoggerService, public popupService: PopupService) {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe((data) => {
+    const subscription = this.route.params.subscribe((data) => {
       const idFromRoute = data['id'];
       this.selectedListID = isNaN(idFromRoute) ? 0 : +idFromRoute;
       this.setupComponent(this.selectedListID);
     });
+    this.paramsSubscription.push(subscription)
+  }
+
+  ngOnDestroy() {
+    this.paramsSubscription.forEach((subscription) => subscription.unsubscribe())
   }
 
   setupComponent(selectedListID: number) {
     if (selectedListID) {
-      this.listService.fetchItemById(selectedListID)
+      const subscription = this.listService.fetchItemById(selectedListID)
         .subscribe((selectedItem) => this.initCrudForm(selectedItem[0] || null))
+      this.paramsSubscription.push(subscription)
     } else {
       this.initCrudForm();
     }
   }
+
+  canDeactivate() {
+    return this.popupService.showModal("Do you really want to leave this page unsaved").then((response) => response)
+  }
+
 
   initCrudForm(selectedItem?: ListItemType | null) {
     this.formik = new FormGroup({

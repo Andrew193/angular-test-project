@@ -15,10 +15,7 @@ export class ListService {
   }
 
   fetchItemById(id: number) {
-    this.http.get('assets/mock-items.json')
-      .subscribe((data: any) => {
-        this._update.next(data.items.filter((item: ListItemType) => item.id === id))
-      });
+    this._update.next(this._items.filter((item: ListItemType) => item.id === id))
     return this._update;
   }
 

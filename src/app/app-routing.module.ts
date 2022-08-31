@@ -11,6 +11,8 @@ import {ListItemsHeaderComponent} from "./list-items-header/list-items-header.co
 import {ErrorComponentComponent} from "./error-component/error-component.component";
 import {LoggerComponent} from "./logger/logger.component";
 import {PopupComponent} from "./popup/popup.component";
+import {CanActivateGuard} from "./guards/can-activate.guard";
+import {CanDeactivateGuard} from "./guards/deactivate/can-deactivate.guard";
 
 export const routes: Routes = [
   {path: '', component: BasicComponent, title: "Dashboard"},
@@ -19,7 +21,12 @@ export const routes: Routes = [
     title: "Lists",
     children: [
       {path: '', component: ListsComponent},
-      {path: 'crud/:id', component: CrudListItemComponent}
+      {
+        path: 'crud/:id',
+        component: CrudListItemComponent,
+        canActivate: [CanActivateGuard],
+        canDeactivate: [CanDeactivateGuard]
+      }
     ]
   },
   {path: '**', component: Page404Component}
