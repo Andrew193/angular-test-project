@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router} from "@angular/router";
 import {ListService} from "../services/list-service/list-service.service";
 import {Subscription} from "rxjs";
@@ -13,7 +13,7 @@ export type ListItemType = {
   selector: 'app-lists',
   templateUrl: './lists.component.html',
   styleUrls: ['./lists.component.css'],
-  // encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.Emulated,
 })
 
 export class ListsComponent implements OnInit, OnDestroy {
@@ -26,7 +26,13 @@ export class ListsComponent implements OnInit, OnDestroy {
   }
 
   getListItems(): void {
-    //  this.listService.testFetchItemsWithoutCover().subscribe((data) => this.items = data)
+    // this.listService.testFetchItemsWithoutCover().subscribe((data) => {
+    //   console.log("response", data)
+    //   this.items = this.listService.getItems()
+    // }, (error) => {
+    //   console.log("error", error)
+    //   this.items = []
+    // })
     this.itemsSubscription = this.listService.fetchItems().subscribe(() => this.items = this.listService.getItems())
   }
 

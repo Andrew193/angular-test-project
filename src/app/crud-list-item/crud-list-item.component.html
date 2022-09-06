@@ -11,7 +11,7 @@
     [getFieldErrors]="getFieldErrors"
   >
     <label for="name">List name: </label>
-    <input id="name" type="text" formControlName="name" class="outline-none" #fieldInput autocomplete="">
+    <input id="name" type="text" formControlName="name" class="outline-none" autoFocusEnter #fieldInput>
   </app-error-component>
 
   <app-error-component
@@ -19,7 +19,8 @@
     [getFieldErrors]="getFieldErrors"
   >
     <label for="description">List description: </label>
-    <input id="description" type="textarea" formControlName="description" class="outline-none" #fieldInput>
+    <input id="description" type="textarea" formControlName="description" class="outline-none" autoFocusEnter
+           #fieldInput>
   </app-error-component>
 
   <div formArrayName="tags" class="d-flex flex-column">
@@ -35,6 +36,8 @@
           formControlName="{{getTagsLength()-1}}"
           class="outline-none mb-4"
           #fieldInput
+          appAutofocus
+          autoFocusEnter
           (keydown.enter)="createNewTag(tag)"
         >
       </ng-container>
@@ -44,14 +47,19 @@
       <div class="d-flex tags flex-wrap">
         <span
           *ngFor="let tag of getTags(); let i = index"
-          [ngClass]="{'hide':!tag.value}"
+          [ngClass]="{'hide':!tag.value || tag.value==='Maximum amount of tags is 5'}"
           (click)="deleteTag(i)"
         >{{tag.value}}</span>
       </div>
     </ng-container>
   </div>
 
+  <p
+    *ngIf="!!formik.errors && !!(formik.errors || {})['nameDescription']"
+    class="ng-invalid ng-touched"
+  >{{formik.errors['nameDescription']}}</p>
   <button type="submit" class="btn btn-primary" [disabled]="!formik.valid">Submit</button>
+  <hr />
 </form>
 
 <ng-container *ngTemplateOutlet="(formik.value.name || formik.value.description || formik.value.tags)
@@ -59,10 +67,10 @@
 
 <ng-template #itemPreview>
   <h5 class="text-center">{{selectedListID ? 'Selected item preview' : 'New item preview'}}</h5>
-  <p class="basic-back list-item mb-unset d-flex p-2 mt-3">
+  <div class="basic-back list-item mb-unset d-flex p-2 mt-3">
     <span class="w-25 text-center span-overflow" style="border-right: 1px solid">{{formik.value.name}}</span>
     <span class="w-50 text-center span-overflow" style="border-right: 1px solid">{{formik.value.description}}</span>
-    <span class="w-25 text-center span-overflow">{{formik.value.tags}}</span>
-  </p>
+    <p class="w-25 text-center span-overflow">{{formik.value.tags | tags:"|"}}</p>
+  </div>
 </ng-template>
 

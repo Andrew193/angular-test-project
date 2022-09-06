@@ -1,6 +1,6 @@
 import {Injectable, OnInit} from '@angular/core';
 import {ListItemType} from "../../lists/lists.component";
-import {BehaviorSubject, catchError, map, Observable, of, Subject} from "rxjs";
+import {BehaviorSubject, catchError, map, Observable, of, Subject, tap, throwError} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
@@ -31,11 +31,11 @@ export class ListService {
   }
 
   testFetchItemsWithoutCover() {
-    return this.http.get('https://rickandmortyapi.com/api/character').pipe(map((data: any) => data.results),
-      catchError(error => {
-        console.log(error)
-        return [];
-      }))
+    return this.http.get('https://rickandmortyapi.com/api/character')
+      .pipe(
+        map((data: any) => data.results),
+        catchError(errorObject => throwError(() => errorObject))
+      )
   }
 
   addItem(newItem: ListItemType) {

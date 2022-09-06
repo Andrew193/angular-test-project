@@ -1,11 +1,37 @@
-.tags span{
+.tags {
+  margin-bottom: 5px;
+}
+
+.tags span {
   background: #f2fff6;
   padding: 2px;
   margin: 3px;
   flex: 1 0;
   text-align: center;
+  border: 1px solid;
+  cursor: pointer;
+  transition: all ease 0.5s;
+}
+
+.tags span:hover {
+  background: #c4fed6;
+}
+
+p {
+  margin-bottom: 0px;
 }
 
 .hide {
   display: none;
+}
+
+.dis {
+  display: block;
+  position: absolute;
+  top: 25px;
+  left: 0px;
+  width: 100%;
+  background: #80808082;
+  height: 27px;
+  z-index: 1000;
 }

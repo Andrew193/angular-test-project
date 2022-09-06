@@ -1,9 +1,25 @@
 <ng-container *ngIf="state === 'opened'">
   <div class="inner-container">
     <span>{{_message}}</span>
-    <div>
-      <button type="btn btn-default m-0-5" (click)="reject()">Reject</button>
-      <button type="btn btn-default m-0-5" (click)="apply()">Apply</button>
-    </div>
+    <ng-container *ngIf="popupService.popupConfig else defaultButtons">
+      <ng-container *ngIf="popupService.popupConfig.customButton else defaultButtons">
+        <div>
+          <button
+            *ngFor="let item of popupService.popupConfig.customButtons"
+            type="btn btn-default m-0-5"
+            (click)="item.onclick()"
+          >{{item.label}}</button>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <ng-template #defaultButtons>
+      <div>
+        <button type="btn btn-default m-0-5" (click)="reject()">Reject</button>
+        <button type="btn btn-default m-0-5" (click)="apply()">Apply</button>
+      </div>
+    </ng-template>
   </div>
+
+  <div class="back"></div>
 </ng-container>

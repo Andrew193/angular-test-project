@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  test: "rest23",
+  theme: "default"
 };

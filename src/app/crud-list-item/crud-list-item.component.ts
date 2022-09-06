@@ -1,11 +1,20 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from "@angular/forms";
 import {ListService} from "../services/list-service/list-service.service";
 import {LoggerService, LogTypes} from "../services/logger-service/logger.service";
 import {PopupService} from "../services/popup/popup.service";
 import {ListItemType} from "../lists/lists.component";
-import {Subscription} from "rxjs";
+import {of, Subscription, takeUntil} from "rxjs";
+import {CrudListItemService} from "../services/crud-list-item/crud-list-item.service";
 
 export type errorMessagesType = { errorName: string; errorMessage: string | undefined; }[];
 
@@ -20,16 +29,19 @@ function getErrorMessage(errorMessage: string, config: any) {
 @Component({
   selector: '[crud-list-item]',
   templateUrl: './crud-list-item.component.html',
-  styleUrls: ['./crud-list-item.component.css']
+  styleUrls: ['./crud-list-item.component.css'],
+  providers: [CrudListItemService]
 })
 
 export class CrudListItemComponent implements OnInit, OnDestroy {
   selectedListID: number = 0;
   formik: any;
+  isPageSaved: boolean = false;
   private paramsSubscription: Subscription[] = [];
 
   constructor(private route: ActivatedRoute, private listService: ListService,
-              private logger: LoggerService, public popupService: PopupService) {
+              private logger: LoggerService, public popupService: PopupService,
+              private crudList: CrudListItemService) {
   }
 
   ngOnInit(): void {
@@ -45,31 +57,25 @@ export class CrudListItemComponent implements OnInit, OnDestroy {
     this.paramsSubscription.forEach((subscription) => subscription.unsubscribe())
   }
 
+  formChangesTracker() {
+    this.isPageSaved = false;
+  }
+
   setupComponent(selectedListID: number) {
     if (selectedListID) {
       const subscription = this.listService.fetchItemById(selectedListID)
-        .subscribe((selectedItem) => this.initCrudForm(selectedItem[0] || null))
+        .subscribe((selectedItem) => this.formik = this.crudList.initCrudForm(this.formChangesTracker.bind(this), selectedItem[0] || null))
       this.paramsSubscription.push(subscription)
     } else {
-      this.initCrudForm();
+      this.formik = this.crudList.initCrudForm(this.formChangesTracker.bind(this), null);
     }
   }
 
   canDeactivate() {
-    return this.popupService.showModal("Do you really want to leave this page unsaved").then((response) => response)
-  }
-
-
-  initCrudForm(selectedItem?: ListItemType | null) {
-    this.formik = new FormGroup({
-      name: new FormControl(selectedItem ? selectedItem.name : "", [
-        Validators.required,
-        Validators.minLength(15),
-        Validators.maxLength(40)
-      ]),
-      description: new FormControl(selectedItem ? selectedItem['description'] : "", Validators.maxLength(100)),
-      tags: new FormArray([new FormControl(selectedItem ? selectedItem['tags'] : "", Validators.maxLength(10))])
-    })
+    if (this.isPageSaved) {
+      return true;
+    }
+    return this.popupService.showModal("Do you really want to leave this page unsaved");
   }
 
   getTags() {
@@ -78,11 +84,17 @@ export class CrudListItemComponent implements OnInit, OnDestroy {
 
   createNewTag(tagConfig: FormControl) {
     if (!tagConfig.errors) {
-      this.formik.controls.tags.push(new FormControl("", Validators.maxLength(10)))
+      this.formik.controls.tags.push(new FormControl({
+        value: this.getTagsLength() === 5 ? "Maximum amount of tags is 5" : "",
+        disabled: this.getTagsLength() === 5,
+      }, Validators.maxLength(10)))
     }
   }
 
   deleteTag(index: number) {
+    if (this.formik.controls.tags.controls.length === 6) {
+      this.formik.controls.tags.controls = this.formik.controls.tags.controls.slice(0, 5)
+    }
     this.formik.controls.tags.removeAt(index)
   }
 
@@ -92,28 +104,13 @@ export class CrudListItemComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.formik.status === "VALID") {
+      this.isPageSaved = true;
       if (this.selectedListID) {
-        this.updateExistingItem();
+        this.crudList.updateExistingItem(this.selectedListID);
       } else {
-        this.createNewItem();
+        this.crudList.createNewItem();
       }
     }
-  }
-
-  updateExistingItem() {
-    this.listService.updateItemById({...this.formik.value, id: this.selectedListID}, this.selectedListID - 1);
-    this.logger.logMessage(this.logger.getLogConfig(`Item has been updated. Item id: ${this.selectedListID}`, LogTypes.LOG));
-    this.popupService.showModal(`Item with id: ${this.selectedListID} has been updated`);
-  }
-
-  createNewItem() {
-    const currentItemsLength = this.listService.getItemsLength();
-    this.listService.addItem({
-      ...this.formik.value,
-      id: currentItemsLength + 1
-    })
-    this.logger.logMessage(this.logger.getLogConfig("Item has been created", LogTypes.LOG));
-    this.popupService.showModal("New item has been created");
   }
 
   public getFieldErrors = (field: string): errorMessagesType => {

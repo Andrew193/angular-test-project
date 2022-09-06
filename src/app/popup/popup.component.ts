@@ -1,4 +1,11 @@
-import {Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostBinding,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {PopupService} from "../services/popup/popup.service";
 import {Subject, takeUntil} from "rxjs";
@@ -10,16 +17,17 @@ import {Subject, takeUntil} from "rxjs";
   animations: [
     trigger('state', [
       transition('* => *', animate('500ms ease')),
-      state('opened', style({ height: '99%', background: '#f0f8ff87'})),
+      state('opened', style({transform: 'translateY(0%)'})),
       state('void, closed', style({transform: 'translateY(100%)'})),
     ])
   ],
 })
+
 export class PopupComponent implements OnDestroy, OnInit {
   _message = '';
   unsubscribe$: Subject<boolean> = new Subject();
 
-  constructor(private popupService: PopupService) {
+  constructor(public popupService: PopupService) {
   }
 
   ngOnInit() {
@@ -36,6 +44,9 @@ export class PopupComponent implements OnDestroy, OnInit {
   }
 
   @HostBinding("@state") state: 'opened' | 'closed' = 'closed';
+  @HostBinding("style") get class() {
+    return this.state === 'opened' ? "height: 100%" : ""
+  }
 
   @Output() yes = new EventEmitter<void>();
   @Output() no = new EventEmitter<void>();

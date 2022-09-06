@@ -1,6 +1,6 @@
 <p>The list of your items</p>
 
-<div *ngIf="items.length">
+<ng-container *ngIf="items.length">
   <app-list-items-header
     [sortById]="sortById"
     [sortByName]="sortByName"
@@ -9,8 +9,8 @@
   ></app-list-items-header>
   <app-list-item *ngFor="let item of items" [item]="item" (click)="showDetails(item.id)"></app-list-item>
   <div style="border-top: 1px solid"></div>
-</div>
+</ng-container>
 
-<div *ngIf="!items.length">
-  This section is empty
-</div>
+<ng-container *ngIf="!items.length">
+  <p [ngStyle]="{'color':'red', 'font-size':'12px'}">This section is empty</p>
+</ng-container>
