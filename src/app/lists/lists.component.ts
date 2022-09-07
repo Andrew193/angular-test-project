@@ -1,7 +1,8 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router} from "@angular/router";
 import {ListService} from "../services/list-service/list-service.service";
-import {Subscription} from "rxjs";
+import {debounceTime, Subject, Subscription} from "rxjs";
+import {HideDirective} from "../directives/hide/hide.directive";
 
 export type ListItemType = {
   id: number,
@@ -14,15 +15,35 @@ export type ListItemType = {
   templateUrl: './lists.component.html',
   styleUrls: ['./lists.component.css'],
   encapsulation: ViewEncapsulation.Emulated,
+  providers: [HideDirective]
 })
 
 export class ListsComponent implements OnInit, OnDestroy {
   items: ListItemType[] = [];
   sortByIdOrder = false;
   sortByIdName = false;
+  searchName = '';
+  searchUpdater$: Subject<string> = new Subject<string>();
+
   private itemsSubscription: Subscription = new Subscription();
 
   constructor(private router: Router, private listService: ListService) {
+  }
+
+  filterList(element: any) {
+    console.log(element!.value)
+    this.searchUpdater$.next(element.value)
+  }
+
+  ngOnInit(): void {
+    this.getListItems();
+    this.sortByIdOrder = true;
+    this.sortByIdName = true;
+    this.searchUpdater$.pipe(debounceTime(1000))
+      .subscribe((newSearchName) => {
+        console.log("test", newSearchName)
+        this.searchName = newSearchName;
+      })
   }
 
   getListItems(): void {
@@ -42,12 +63,6 @@ export class ListsComponent implements OnInit, OnDestroy {
 
   showDetails(id: number): void {
     this.router.navigate(["/lists/crud", id]);
-  }
-
-  ngOnInit(): void {
-    this.getListItems();
-    this.sortByIdOrder = true;
-    this.sortByIdName = true;
   }
 
   public sortById = (): void => {

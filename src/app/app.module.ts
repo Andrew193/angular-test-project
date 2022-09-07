@@ -10,10 +10,12 @@ import {CanDeactivateGuard} from "./guards/deactivate/can-deactivate.guard";
 import {TagsPipe} from './pipes/tags/tags.pipe';
 import {AutofocusDirective} from './directives/autofocus/autofocus.directive';
 import {AutofocusenterDirective} from './directives/autofocusenter/autofocusenter.directive';
-import { ForTestsComponent } from './for-tests/for-tests.component'
+import { ForTestsComponent } from './for-tests/for-tests.component';
+import { HideDirective } from './directives/hide/hide.directive';
+import { ListFilterPipe } from './pipes/listFilter/list-filter.pipe'
 
 @NgModule({
-  declarations: [routingComponents, TagsPipe, AutofocusDirective, AutofocusenterDirective, ForTestsComponent],
+  declarations: [routingComponents, TagsPipe, AutofocusDirective, AutofocusenterDirective, ForTestsComponent, HideDirective, ListFilterPipe],
   imports: [
     BrowserModule,
     AppRoutingModule,

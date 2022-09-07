@@ -1,18 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {
-  AbstractControl,
-  FormArray,
   FormControl,
-  FormGroup,
-  ValidationErrors,
-  ValidatorFn,
   Validators
 } from "@angular/forms";
 import {ListService} from "../services/list-service/list-service.service";
-import {LoggerService, LogTypes} from "../services/logger-service/logger.service";
+import {LoggerService} from "../services/logger-service/logger.service";
 import {PopupService} from "../services/popup/popup.service";
-import {ListItemType} from "../lists/lists.component";
 import {of, Subscription, takeUntil} from "rxjs";
 import {CrudListItemService} from "../services/crud-list-item/crud-list-item.service";
 

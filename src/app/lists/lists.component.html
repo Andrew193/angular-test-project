@@ -1,16 +1,25 @@
 <p>The list of your items</p>
 
-<ng-container *ngIf="items.length">
+<ng-container *appHide="!items.length">
+  <input
+    placeholder="Filter by name"
+    class="input-group"
+    (input)="filterList($event.target)"
+  />
+  <hr/>
   <app-list-items-header
     [sortById]="sortById"
     [sortByName]="sortByName"
     [sortByIdOrder]="sortByIdOrder"
     [sortByIdName]="sortByIdName"
   ></app-list-items-header>
-  <app-list-item *ngFor="let item of items" [item]="item" (click)="showDetails(item.id)"></app-list-item>
+  <app-list-item
+    *ngFor="let item of items | listFilter:searchName; let i = index"
+    [item]="{itemConfig:item, index:i}"
+    (click)="showDetails(item.id)"></app-list-item>
   <div style="border-top: 1px solid"></div>
 </ng-container>
 
-<ng-container *ngIf="!items.length">
+<ng-container *appHide="items.length">
   <p [ngStyle]="{'color':'red', 'font-size':'12px'}">This section is empty</p>
 </ng-container>

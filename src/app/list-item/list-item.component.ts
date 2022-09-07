@@ -8,13 +8,12 @@ import {ListItemType} from "../lists/lists.component";
 })
 
 export class ListItemComponent implements OnInit {
-  @Input() item: ListItemType | undefined;
+  @Input() item: { itemConfig: ListItemType, index: number } | undefined;
 
   constructor() {
   }
 
   ngOnInit(): void {
-    console.log(this.item)
   }
 
 }
