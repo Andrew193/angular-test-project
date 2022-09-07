@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://checklist.vm.flex-solution.com",
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
