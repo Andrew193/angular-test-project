@@ -1,6 +1,6 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ListItemType} from "../../lists/lists.component";
-import {BehaviorSubject, catchError, map, Observable, of, Subject, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, map, throwError} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
@@ -20,11 +20,13 @@ export class ListService {
   }
 
   fetchItems() {
+    const assetsApi = 'assets/mock-items.json';
+
     if (this._items.length === 0) {
-      this.http.get('assets/mock-items.json')
+      this.http.get('/items')
         .subscribe((data: any) => {
-          this._items = data.items;
-          this._update.next(data.items)
+          this._items = data;
+          this._update.next(this._items)
         });
     }
     return this._update;

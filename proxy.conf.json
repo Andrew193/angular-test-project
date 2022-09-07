@@ -3,5 +3,8 @@
     "target": "https://checklist.vm.flex-solution.com",
     "changeOrigin": true,
     "logLevel": "debug"
+  },
+  "/items": {
+    "target": "http://localhost:3000"
   }
 }

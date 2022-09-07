@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "test",
+      "description": "",
+      "tags": [""]
+    },
+    {
+      "id": 2,
+      "name": "rest",
+      "description": "",
+      "tags": [""]
+    }
+  ]
+}
