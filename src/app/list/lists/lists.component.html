@@ -15,7 +15,7 @@
   ></app-list-items-header>
   <app-list-item
     *ngFor="let item of items | listFilter:searchName; let i = index"
-    [item]="{itemConfig:item, index:i}"
+    [item]="{itemConfig:item, index:item.id}"
     (click)="showDetails(item.id)"></app-list-item>
   <div style="border-top: 1px solid"></div>
 </ng-container>

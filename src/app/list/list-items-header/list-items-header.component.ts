@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {voidReturnVoidPassFunction} from "../basic-types";
+import {voidReturnVoidPassFunction} from "../../basic-types";
 
 @Component({
   selector: 'app-list-items-header',

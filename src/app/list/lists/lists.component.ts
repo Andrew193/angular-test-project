@@ -1,8 +1,8 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router} from "@angular/router";
-import {ListService} from "../services/list-service/list-service.service";
+import {ListService} from "../../services/list-service/list-service.service";
 import {debounceTime, Subject, Subscription} from "rxjs";
-import {HideDirective} from "../directives/hide/hide.directive";
+import {HideDirective} from "../../directives/hide/hide.directive";
 
 export type ListItemType = {
   id: number,

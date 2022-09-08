@@ -1,6 +1,6 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {ListService} from "../list-service/list-service.service";
-import {ListItemType} from "../../lists/lists.component";
+import {ListItemType} from "../../list/lists/lists.component";
 import {
   AbstractControl,
   FormArray,
@@ -12,12 +12,13 @@ import {
 } from "@angular/forms";
 import {LoggerService, LogTypes} from "../logger-service/logger.service";
 import {PopupService} from "../popup/popup.service";
-import {Subject, takeUntil} from "rxjs";
+import {catchError, Subject, takeUntil} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
-export class CrudListItemService implements OnDestroy{
+export class CrudListItemService implements OnDestroy {
   formik: any;
   _subscriptions$: Subject<any> = new Subject();
   crudPopupConfig = {
@@ -32,7 +33,8 @@ export class CrudListItemService implements OnDestroy{
     ]
   }
 
-  constructor(private listService: ListService, private logger: LoggerService, public popupService: PopupService) {
+  constructor(private listService: ListService, private logger: LoggerService, public popupService: PopupService,
+              private http: HttpClient) {
   }
 
   initCrudForm(changesParser: () => void, selectedItem?: ListItemType | null) {
@@ -46,12 +48,9 @@ export class CrudListItemService implements OnDestroy{
       tags: new FormArray(
         selectedItem ? selectedItem['tags'].map((tag: string) => new FormControl(tag)) : [new FormControl("")], Validators.maxLength(10))
     }, {validators: [this.nameDescription]})
-
     this.formik.valueChanges.pipe(takeUntil(this._subscriptions$)).subscribe(() => {
       changesParser();
     })
-
-    console.log(this.formik)
     return this.formik;
   }
 
@@ -61,19 +60,25 @@ export class CrudListItemService implements OnDestroy{
   }
 
   updateExistingItem(selectedListID: number) {
-    this.listService.updateItemById({...this.formik.value, id: selectedListID}, selectedListID - 1);
-    this.logger.logMessage(this.logger.getLogConfig(`Item has been updated. Item id: ${selectedListID}`, LogTypes.LOG));
-    this.popupService.showModal(`Item with id: ${selectedListID} has been updated`, this.crudPopupConfig);
+    this.http.put(`/items/${selectedListID - 1}`, {...this.formik.value})
+      .pipe(catchError((error) => {
+        this.logger.logMessage(this.logger.getLogConfig(error.message, LogTypes.LOG));
+        return []
+      }))
+      .subscribe((response: any) => {
+        this.listService.updateItemById(response, selectedListID - 1);
+        this.logger.logMessage(this.logger.getLogConfig(`Item has been updated. Item id: ${response.id}`, LogTypes.LOG));
+        this.popupService.showModal(`Item with id: ${selectedListID} has been updated`, this.crudPopupConfig);
+      })
   }
 
   createNewItem() {
-    const currentItemsLength = this.listService.getItemsLength();
-    this.listService.addItem({
-      ...this.formik.value,
-      id: currentItemsLength + 1
-    })
-    this.logger.logMessage(this.logger.getLogConfig("Item has been created", LogTypes.LOG));
-    this.popupService.showModal("New item has been created", this.crudPopupConfig)
+    this.http.post("/items", {...this.formik.value})
+      .subscribe((response: any) => {
+        this.listService.addItem(response)
+        this.logger.logMessage(this.logger.getLogConfig("Item has been created", LogTypes.LOG));
+        this.popupService.showModal("New item has been created", this.crudPopupConfig)
+      })
   }
 
   nameDescription: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -81,7 +86,7 @@ export class CrudListItemService implements OnDestroy{
     const description = control.get('description');
 
     return name && description && name.value === description.value
-    && !!description.value  && !!name.value
+    && !!description.value && !!name.value
       ? {nameDescription: "Name can not match description"}
       : null;
   };

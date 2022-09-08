@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ListItemType} from "../../lists/lists.component";
+import {ListItemType} from "../../list/lists/lists.component";
 import {BehaviorSubject, catchError, map, throwError} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 

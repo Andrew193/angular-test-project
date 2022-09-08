@@ -4,11 +4,11 @@ import {
   FormControl,
   Validators
 } from "@angular/forms";
-import {ListService} from "../services/list-service/list-service.service";
-import {LoggerService} from "../services/logger-service/logger.service";
-import {PopupService} from "../services/popup/popup.service";
+import {ListService} from "../../services/list-service/list-service.service";
+import {LoggerService} from "../../services/logger-service/logger.service";
+import {PopupService} from "../../services/popup/popup.service";
 import {of, Subscription, takeUntil} from "rxjs";
-import {CrudListItemService} from "../services/crud-list-item/crud-list-item.service";
+import {CrudListItemService} from "../../services/crud-list-item/crud-list-item.service";
 
 export type errorMessagesType = { errorName: string; errorMessage: string | undefined; }[];
 

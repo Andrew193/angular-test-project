@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {ListItemType} from "../../lists/lists.component";
+import {ListItemType} from "../../list/lists/lists.component";
 
 @Pipe({
   name: 'listFilter'

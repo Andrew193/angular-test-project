@@ -1,5 +1,5 @@
 import {Component, ContentChild, ElementRef, Input, OnInit, Renderer2} from '@angular/core';
-import {errorMessagesType} from "../crud-list-item/crud-list-item.component";
+import {errorMessagesType} from "../list/crud-list-item/crud-list-item.component";
 import {FormControl} from "@angular/forms";
 
 type FieldType = { name: string, formikConfig: FormControl<string | null> }

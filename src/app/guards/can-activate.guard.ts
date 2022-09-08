@@ -1,10 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {map, Observable, Subject} from 'rxjs';
+import {Observable} from 'rxjs';
 import {PopupService} from "../services/popup/popup.service";
-import {HttpClient} from "@angular/common/http";
-import {ListService} from "../services/list-service/list-service.service";
-
 @Injectable({
   providedIn: 'root'
 })
