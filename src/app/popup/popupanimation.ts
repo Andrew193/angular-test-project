@@ -24,30 +24,14 @@ export const PopupAnimation: AnimationTriggerMetadata = trigger('state', [
 ])
 
 export const PopupBackAnimation: AnimationTriggerMetadata = trigger('backState', [
-  transition(':enter', [
-    animate('500ms', keyframes([
-      style({
-        opacity: '0.3'
-      }),
-      style({
-        opacity: '0.6'
-      }),
-      style({
-        opacity: '1'
-      }),
-    ]))
-  ]),
-  transition(':leave', [
-    animate('600ms', keyframes([
-      style({
-        opacity: '1'
-      }),
-      style({
-        opacity: '0.6'
-      }),
-      style({
-        opacity: '0.3'
-      }),
-    ]))
-  ])
+  state('opened', style({
+    opacity: 1,
+    background: '#F0F8FF87'
+  })),
+  state('closed', style({
+    opacity: 0,
+    background: '#F0F8FF87'
+  })),
+
+  transition('void <=> opened', animate('1000ms'))
 ])

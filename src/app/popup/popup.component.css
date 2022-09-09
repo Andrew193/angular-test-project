@@ -60,14 +60,12 @@ span {
 }
 
 .back {
-  background: rgba(240, 248, 255, 0.53);
   position: fixed !important;
   z-index: 10 !important;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
-  opacity: 1;
 }
 
 button {
