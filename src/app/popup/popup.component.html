@@ -1,4 +1,4 @@
-<ng-container *ngIf="state === 'opened'">
+<div [@state]="state">
   <div class="inner-container">
     <span>{{_message}}</span>
     <ng-container *ngIf="popupService.popupConfig else defaultButtons">
@@ -20,6 +20,6 @@
       </div>
     </ng-template>
   </div>
+</div>
 
-  <div class="back"></div>
-</ng-container>
+<div *ngIf="state === 'opened'" [@backState]="state" class="back" [ngStyle]="{height:innerHeight+'px'}"></div>

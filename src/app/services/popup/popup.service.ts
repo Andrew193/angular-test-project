@@ -51,7 +51,10 @@ export class PopupService implements OnDestroy {
   }
 
   hideModal(reaction: boolean) {
-    this.message = "";
+    const timer = setTimeout(() => {
+      this.message = "";
+      clearTimeout(timer);
+    }, 510)
     this.isOpened = false;
     this.reaction = reaction;
     this._isOpenedUpdater$.next(this.isOpened);

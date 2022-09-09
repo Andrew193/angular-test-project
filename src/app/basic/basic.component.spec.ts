@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BasicComponent } from './basic.component';
+import {BasicComponent} from './basic.component';
 
 describe('BasicComponent', () => {
   let component: BasicComponent;
@@ -8,16 +8,23 @@ describe('BasicComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BasicComponent ]
+      declarations: [BasicComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(BasicComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Should create main page', () => {
     expect(component).toBeTruthy();
   });
+
+  it('Should have main page headline', () => {
+    const componentElement = fixture.debugElement.nativeElement;
+    const mainPageHeader = componentElement.querySelector(".main-page-header");
+    const mainPageHeaderContent = mainPageHeader.textContent;
+    expect(mainPageHeaderContent).toEqual("Main page content")
+  })
 });

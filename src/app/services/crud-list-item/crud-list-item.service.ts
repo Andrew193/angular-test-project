@@ -60,7 +60,7 @@ export class CrudListItemService implements OnDestroy {
   }
 
   updateExistingItem(selectedListID: number) {
-    this.http.put(`/items/${selectedListID - 1}`, {...this.formik.value})
+    this.http.put(`/items/${selectedListID}`, {...this.formik.value})
       .pipe(catchError((error) => {
         this.logger.logMessage(this.logger.getLogConfig(error.message, LogTypes.LOG));
         return []

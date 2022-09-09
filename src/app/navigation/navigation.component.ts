@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {routes} from "../app-routing.module";
+import {routes, routesForNavigation} from "../app-routing.module";
 import {Router, Routes} from "@angular/router";
 
 const getStartEnd = (str: string, sub: string) => [str.indexOf(sub), str.indexOf(sub) + sub.length - 1]
@@ -10,7 +10,7 @@ const getStartEnd = (str: string, sub: string) => [str.indexOf(sub), str.indexOf
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-  NavigationRoutes: Routes = [];
+  NavigationRoutes: { path: string, title: string }[] = [];
 
   constructor(public router: Router) {
   }
@@ -42,7 +42,7 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.NavigationRoutes = routes.slice(0, routes?.length - 1)
+    this.NavigationRoutes = routesForNavigation.slice(0, routes?.length - 1) as { path: string, title: string }[];
   }
 
 }

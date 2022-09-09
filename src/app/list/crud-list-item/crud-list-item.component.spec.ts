@@ -17,7 +17,7 @@ describe('SelectedListItemComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Should create crud list page', () => {
     expect(component).toBeTruthy();
   });
 });

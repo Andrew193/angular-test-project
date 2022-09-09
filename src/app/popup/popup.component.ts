@@ -1,30 +1,28 @@
 import {
   Component,
   EventEmitter,
-  HostBinding,
+  HostBinding, HostListener,
   OnDestroy,
   OnInit,
   Output
 } from '@angular/core';
-import {animate, state, style, transition, trigger} from '@angular/animations';
 import {PopupService} from "../services/popup/popup.service";
 import {Subject, takeUntil} from "rxjs";
+import {PopupAnimation, PopupBackAnimation} from "./popupanimation";
 
 @Component({
   selector: 'popup',
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.css'],
   animations: [
-    trigger('state', [
-      transition('* => *', animate('500ms ease')),
-      state('opened', style({transform: 'translateY(0%)'})),
-      state('void, closed', style({transform: 'translateY(100%)'})),
-    ])
+    PopupAnimation,
+    PopupBackAnimation
   ],
 })
 
 export class PopupComponent implements OnDestroy, OnInit {
   _message = '';
+  innerHeight: number = 0;
   unsubscribe$: Subject<boolean> = new Subject();
 
   constructor(public popupService: PopupService) {
@@ -32,6 +30,7 @@ export class PopupComponent implements OnDestroy, OnInit {
 
   ngOnInit() {
     this.setUpPopup();
+    this.innerHeight = window.innerHeight - 2;
   }
 
   setUpPopup() {
@@ -43,7 +42,8 @@ export class PopupComponent implements OnDestroy, OnInit {
       })
   }
 
-  @HostBinding("@state") state: 'opened' | 'closed' = 'closed';
+  state: 'opened' | 'closed' = 'closed';
+
   @HostBinding("style") get class() {
     return this.state === 'opened' ? "height: 100%" : ""
   }
@@ -57,6 +57,11 @@ export class PopupComponent implements OnDestroy, OnInit {
 
   reject() {
     this.no.emit();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.innerHeight = window.innerHeight - 2;
   }
 
   ngOnDestroy() {

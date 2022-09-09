@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
 import {LoggerService} from "../services/logger-service/logger.service";
-import {test} from "./test";
+import {testFile} from "./testFile";
 
 @Component({
   selector: 'app-basic',
@@ -10,7 +10,7 @@ import {test} from "./test";
 })
 export class BasicComponent {
   constructor(private route: Router, public logger: LoggerService) {
-    test()
+    testFile()
   }
 
   redirectToAllItems() {
