@@ -1,6 +1,64 @@
-<p class="main-page-header">Main page content</p>
+<h1 class="main-page-header text-center">Main page content</h1>
 
+<main>
+  <span class="square">
+    <span>
+      <img class="img" alt="Lorem ipsum" src="assets/img/lorem.png"/>
+    </span>
+  </span>
+  <p class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dignissimos dolore dolorem
+    dolores ducimus eaque illum ipsam itaque laboriosam magnam minus necessitatibus nemo obcaecati quidem quisquam,
+    ratione recusandae repellat repudiandae sed sint temporibus totam vero? Aut commodi debitis eos eveniet inventore
+    itaque laudantium libero modi natus nihil nobis odio, officiis pariatur provident, qui quis ratione, repellendus
+    reprehenderit rerum similique sint tempore voluptas? A alias aliquam aliquid aspernatur atque beatae commodi
+    dignissimos distinctio doloremque ea eaque esse est harum laborum magnam magni maiores maxime minima nemo neque
+    nobis non odit officia officiis omnis pariatur porro quam quas quasi quis quisquam quo ratione reiciendis,
+    reprehenderit velit vero vitae? Consequatur dolores, et exercitationem fugiat minus modi nobis obcaecati. Est
+    eveniet excepturi quia veniam?</p>
+  <div class="square">
+    <div>
+      <img class="img" alt="Lorem ipsum" src="assets/img/lorem.png"/>
+    </div>
+  </div>
+  <p class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dignissimos dolore dolorem
+    dolores ducimus eaque illum ipsam itaque laboriosam magnam minus necessitatibus nemo obcaecati quidem quisquam,
+    ratione recusandae repellat repudiandae sed sint temporibus totam vero? Aut commodi debitis eos eveniet inventore
+    itaque laudantium libero modi natus nihil nobis odio, officiis pariatur provident, qui quis ratione, repellendus
+    reprehenderit rerum similique sint tempore voluptas?
+    A alias aliquam aliquid aspernatur atque beatae commodi
+    dignissimos distinctio doloremque ea eaque esse est harum laborum magnam magni maiores maxime minima nemo neque
+    nobis non odit officia officiis omnis pariatur porro quam quas quasi quis quisquam quo ratione reiciendis,
+    reprehenderit velit vero vitae? Consequatur dolores, et exercitationem fugiat minus modi nobis obcaecati. Est
+    eveniet excepturi quia veniam?</p>
+  <p class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dignissimos dolore dolorem
+    dolores ducimus eaque illum ipsam itaque laboriosam magnam minus necessitatibus nemo obcaecati quidem quisquam,
+    ratione recusandae repellat repudiandae sed sint temporibus totam vero? Aut commodi debitis eos eveniet inventore
+    itaque laudantium libero modi natus nihil nobis odio, officiis pariatur provident, qui quis ratione, repellendus
+    reprehenderit rerum similique sint tempore voluptas? A alias aliquam aliquid aspernatur atque beatae commodi
+    dignissimos distinctio doloremque ea eaque esse est harum laborum magnam magni maiores maxime minima nemo neque
+    nobis non odit officia officiis omnis pariatur porro quam quas quasi quis quisquam quo ratione reiciendis,
+    reprehenderit velit vero vitae? Consequatur dolores, et exercitationem fugiat minus modi nobis obcaecati. Est
+    eveniet excepturi quia veniam?</p>
+  <h4 class="text-center">Lorem ipsum dolor?</h4>
+  <img alt="Lorem ipsum" src="assets/img/lorem.png" width="100%"/>
+  <p class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dignissimos dolore dolorem
+    dolores ducimus eaque illum ipsam itaque laboriosam magnam minus necessitatibus nemo obcaecati quidem quisquam,
+    ratione recusandae repellat repudiandae sed sint temporibus totam vero? Aut commodi debitis eos eveniet inventore
+    itaque laudantium libero modi natus nihil nobis odio, officiis pariatur provident, qui quis ratione, repellendus
+    reprehenderit rerum similique sint tempore voluptas? A alias aliquam aliquid aspernatur atque beatae commodi
+    dignissimos distinctio doloremque ea eaque esse est harum laborum magnam magni maiores maxime minima nemo neque
+    nobis non odit officia officiis omnis pariatur porro quam quas quasi quis quisquam quo ratione reiciendis,
+    reprehenderit velit vero vitae? Consequatur dolores, et exercitationem fugiat minus modi nobis obcaecati. Est
+    eveniet excepturi quia veniam?</p>
+</main>
+
+<hr>
 <p class="m-1" style="text-align: right">
-  <button class="btn btn-outline-success mr-2" (click)="createNewItem()">Create a new item</button>
+  <button
+    class="btn btn-outline-success mr-2"
+    (click)="createNewItem()"
+    [@createNewItem]="createListPulls"
+  >Create a new item
+  </button>
   <button class="btn btn-primary" (click)="redirectToAllItems()">View existing items</button>
 </p>

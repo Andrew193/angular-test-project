@@ -1,7 +1,7 @@
 import {
   animate,
-  AnimationTriggerMetadata,
-  keyframes,
+  AnimationTriggerMetadata, group,
+  keyframes, query,
   state,
   style,
   transition,
@@ -25,13 +25,11 @@ export const PopupAnimation: AnimationTriggerMetadata = trigger('state', [
 
 export const PopupBackAnimation: AnimationTriggerMetadata = trigger('backState', [
   state('opened', style({
-    opacity: 1,
-    background: '#F0F8FF87'
+    opacity: '1',
+    background: '#F0F8FF87',
   })),
-  state('closed', style({
-    opacity: 0,
-    background: '#F0F8FF87'
+  state('void', style({
+    opacity: '0',
   })),
-
-  transition('void <=> opened', animate('1000ms'))
+  transition('void <=> opened', animate(1000))
 ])

@@ -1,4 +1,4 @@
-<div [@state]="state">
+<div [@state]="state" class="popup-root">
   <div class="inner-container">
     <span>{{_message}}</span>
     <ng-container *ngIf="popupService.popupConfig else defaultButtons">
@@ -13,6 +13,8 @@
       </ng-container>
     </ng-container>
 
+    <main #customContentTarget style="display: flex"></main>
+
     <ng-template #defaultButtons>
       <div>
         <button type="btn btn-default m-0-5" (click)="reject()">Reject</button>
@@ -22,4 +24,5 @@
   </div>
 </div>
 
-<div *ngIf="state === 'opened'" [@backState]="state" class="back" [ngStyle]="{height:innerHeight+'px'}"></div>
+<div *ngIf="state === 'opened'" [@backState]="state" class="back" [ngStyle]="{height:innerHeight+'px', opacity:'0'}"
+></div>

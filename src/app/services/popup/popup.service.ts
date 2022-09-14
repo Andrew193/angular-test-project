@@ -1,10 +1,10 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {BehaviorSubject, Observable, of, Subject, Subscriber, Subscription} from "rxjs";
 
-
 type PopupServiceConfigType = {
   customButton: boolean,
-  customButtons: Array<{ onclick: () => void, label: string }>
+  customButtons: Array<{ onclick: () => void, label: string }>,
+  customContent?: any
 }
 
 @Injectable({
@@ -19,7 +19,14 @@ export class PopupService implements OnDestroy {
   isAllowed$: Subject<boolean> = new Subject();
   _isOpenedUpdater$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isOpened);
 
-  getClearMessage(): string {
+  resetWindowConfiguration() {
+    // this.isOpened = false;
+    // this.reaction = false
+    // this.popupConfig = undefined
+    // this.message = "";
+  }
+
+  get getClearMessage(): string {
     return this.message;
   }
 

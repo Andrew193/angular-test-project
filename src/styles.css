@@ -1,6 +1,54 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
+body {
+  text-align: center;
+}
+
+.preview-image {
+  flex: 1 47%;
+  min-height: 250px;
+  height: 300px;
+  width: 250px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  margin: 10px;
+}
+
+.gallery-preview-image {
+  min-height: 250px;
+  height: 300px;
+  width: 250px;
+  background-position: center;
+  margin: 10px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 0px #bdf9cf;
+}
+
+input {
+  outline: none;
+  transition: outline ease 0.5s;
+}
+
+input:focus {
+  outline: 3px solid #b7ffcf;
+  border-radius: 2px;
+  border: 2px solid transparent;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: green;
+}
+
+.d-flex-center-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .ml-2 {
   margin-left: 10px;
 }
@@ -21,6 +69,7 @@
   border-left: 1px solid;
   border-right: 1px solid;
   height: 100%;
+  padding-bottom: 10px;
 }
 
 .cursor-pointer {
@@ -36,7 +85,7 @@
   padding: 0px 10px;
 }
 
-input.ng-valid.ng-touched{
+input.ng-valid.ng-touched {
   border: 1px solid rgb(0 101 27);
   background: rgb(233 252 233);
 }

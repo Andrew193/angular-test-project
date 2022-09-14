@@ -1,0 +1,10 @@
+.img-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+:host > div {
+  display: flex;
+  flex-direction: column-reverse;
+}

@@ -1,8 +1,10 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router} from "@angular/router";
 import {ListService} from "../../services/list-service/list-service.service";
-import {debounceTime, Subject, Subscription} from "rxjs";
+import {debounceTime, Subject, takeUntil} from "rxjs";
 import {HideDirective} from "../../directives/hide/hide.directive";
+import {ListAnimation} from "./listAnimation";
+import {createNeItemAnimation} from "../../basic/mainPageAnimation";
 
 export type ListItemType = {
   id: number,
@@ -15,7 +17,8 @@ export type ListItemType = {
   templateUrl: './lists.component.html',
   styleUrls: ['./lists.component.css'],
   encapsulation: ViewEncapsulation.Emulated,
-  providers: [HideDirective]
+  providers: [HideDirective],
+  animations: [ListAnimation, createNeItemAnimation]
 })
 
 export class ListsComponent implements OnInit, OnDestroy {
@@ -24,14 +27,19 @@ export class ListsComponent implements OnInit, OnDestroy {
   sortByIdName = false;
   searchName = '';
   searchUpdater$: Subject<string> = new Subject<string>();
+  createListPulls: 'pulls' | 'closed' = "pulls";
+  animationInterval: number = 0;
 
-  private itemsSubscription: Subscription = new Subscription();
+  private subscriptions$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private router: Router, private listService: ListService) {
   }
 
+  navigateToListCrudPage() {
+    this.router.navigate(['/lists/crud/new'])
+  }
+
   filterList(element: any) {
-    console.log(element!.value)
     this.searchUpdater$.next(element.value)
   }
 
@@ -39,11 +47,11 @@ export class ListsComponent implements OnInit, OnDestroy {
     this.getListItems();
     this.sortByIdOrder = true;
     this.sortByIdName = true;
-    this.searchUpdater$.pipe(debounceTime(1000))
-      .subscribe((newSearchName) => {
-        console.log("test", newSearchName)
-        this.searchName = newSearchName;
-      })
+    this.searchUpdater$.pipe(debounceTime(1000), takeUntil(this.subscriptions$))
+      .subscribe((newSearchName) => this.searchName = newSearchName);
+    this.animationInterval = setInterval(() => {
+      this.createListPulls = this.createListPulls === "closed" ? "pulls" : "closed";
+    }, 500)
   }
 
   getListItems(): void {
@@ -54,11 +62,15 @@ export class ListsComponent implements OnInit, OnDestroy {
     //   console.log("error", error)
     //   this.items = []
     // })
-    this.itemsSubscription = this.listService.fetchItems().subscribe(() => this.items = this.listService.getItems())
+    this.listService.fetchItems().pipe(takeUntil(this.subscriptions$)).subscribe((items) => {
+      this.items = items
+    })
   }
 
   ngOnDestroy() {
-    this.itemsSubscription.unsubscribe()
+    this.subscriptions$.next(true);
+    this.subscriptions$.unsubscribe();
+    clearInterval(this.animationInterval);
   }
 
   showDetails(id: number): void {
@@ -67,9 +79,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 
   public sortById = (): void => {
     this.sortByIdOrder = !this.sortByIdOrder;
-    this.items = this.items!.sort((a, b) => {
-      return this.sortByIdOrder ? a.id - b.id : b.id - a.id;
-    })
+    this.items = this.items!.sort((a, b) => this.sortByIdOrder ? a.id - b.id : b.id - a.id)
   }
 
   public sortByName = (): void => {

@@ -1,0 +1,36 @@
+.item-images-cover {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.gallery-item-information {
+  position: relative;
+  text-align: left;
+  padding: 5px;
+  transition: opacity ease 0.5s;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+}
+
+.gallery-item-information:hover {
+  opacity: 0.7;
+  border-bottom: 1px solid;
+}
+
+.item-name {
+  display: inline-block;
+  font-weight: 500;
+}
+
+.item-name::first-letter {
+  text-transform: uppercase;
+}
+
+.item-number {
+  position: absolute;
+  right: 0;
+  color: #ff8a8a;
+  font-size: 13px;
+  top: 5px;
+}

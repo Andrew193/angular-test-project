@@ -1,73 +1,84 @@
-<h3 class="basic-back p-1 text-center">{{selectedListID ? 'Selected list data' : 'Create new item'}}</h3>
+<h3 class="basic-back p-1 text-center">{{selectedListID ? 'Selected item data' : 'Create new item'}}</h3>
 
-<form
-  [formGroup]="formik"
-  (ngSubmit)="onSubmit()"
-  class="d-flex flex-column"
-  (keydown.enter)="$event.preventDefault()"
->
-  <app-error-component
-    [field]="{formikConfig:formik.controls.name, name:'name'}"
-    [getFieldErrors]="getFieldErrors"
+<ng-container *ngIf="!!formik">
+  <form
+    [formGroup]="formik"
+    (ngSubmit)="onSubmit()"
+    class="d-flex flex-column"
+    (keydown.enter)="$event.preventDefault()"
   >
-    <label for="name">List name: </label>
-    <input id="name" type="text" formControlName="name" class="outline-none" autoFocusEnter #fieldInput>
-  </app-error-component>
-
-  <app-error-component
-    [field]="{formikConfig:formik.controls.description, name:'description'}"
-    [getFieldErrors]="getFieldErrors"
-  >
-    <label for="description">List description: </label>
-    <input id="description" type="textarea" formControlName="description" class="outline-none" autoFocusEnter
-           #fieldInput>
-  </app-error-component>
-
-  <div formArrayName="tags" class="d-flex flex-column">
     <app-error-component
-      [field]="{formikConfig:formik.controls.tags, name:'tags'}"
+      [field]="{formikConfig:formik.controls.name, name:'name'}"
       [getFieldErrors]="getFieldErrors"
     >
-      <ng-container *ngFor="let tag of [getTags()[getTagsLength()-1]]">
-        <label for="{{getTagsLength()-1}}">List tags: </label>
-        <input
-          id="{{getTagsLength()-1}}"
-          type="text"
-          formControlName="{{getTagsLength()-1}}"
-          class="outline-none mb-4"
-          #fieldInput
-          appAutofocus
-          autoFocusEnter
-          (keydown.enter)="createNewTag(tag)"
-        >
-      </ng-container>
+      <label for="name">List name: </label>
+      <input id="name" type="text" formControlName="name" class="outline-none" autoFocusEnter #fieldInput>
     </app-error-component>
 
-    <ng-container *ngIf="getTagsLength()>1">
-      <div class="d-flex tags flex-wrap">
+    <app-error-component
+      [field]="{formikConfig:formik.controls.description, name:'description'}"
+      [getFieldErrors]="getFieldErrors"
+    >
+      <label for="description">List description: </label>
+      <input id="description" type="textarea" formControlName="description" class="outline-none" autoFocusEnter
+             #fieldInput>
+    </app-error-component>
+
+    <div formArrayName="tags" class="d-flex flex-column">
+      <app-error-component
+        [field]="{formikConfig:formik.controls.tags, name:'tags'}"
+        [getFieldErrors]="getFieldErrors"
+      >
+        <ng-container *ngFor="let tag of [getTags()[getTagsLength()-1]]">
+          <label for="{{getTagsLength()-1}}">List tags: </label>
+          <input
+            id="{{getTagsLength()-1}}"
+            type="text"
+            formControlName="{{getTagsLength()-1}}"
+            class="outline-none mb-4"
+            #fieldInput
+            appAutofocus
+            autoFocusEnter
+            (keydown.enter)="createNewTag(tag)"
+          >
+        </ng-container>
+      </app-error-component>
+
+      <ng-container *ngIf="getTagsLength()>1">
+        <div class="d-flex tags flex-wrap">
         <span
           *ngFor="let tag of getTags(); let i = index"
           [ngClass]="{'hide':!tag.value || tag.value==='Maximum amount of tags is 5'}"
           (click)="deleteTag(i)"
         >{{tag.value}}</span>
-      </div>
-    </ng-container>
-  </div>
+        </div>
+      </ng-container>
+    </div>
 
-  <p
-    *ngIf="!!formik.errors && !!(formik.errors || {})['nameDescription']"
-    class="ng-invalid ng-touched"
-  >{{formik.errors['nameDescription']}}</p>
-  <button type="submit" class="btn btn-primary" [disabled]="!formik.valid">Submit</button>
-  <hr />
-</form>
+    <app-file-uploader
+      [uploadConfig]="uploadConfig"
+      [addImage]="addImage"
+      [defaultImages]="images"
+    ></app-file-uploader>
+    <p *ngIf="!!formik.errors && !!(formik.errors || {})['nameDescription']" class="ng-invalid ng-touched">
+      {{formik.errors['nameDescription']}}</p>
+    <p class="crud-list-actions">
+      <button type="submit" class="btn btn-primary"
+              [disabled]="!formik.valid">{{selectedListID ? "Update" : "Create" }}</button>
+      <button *ngIf="selectedListID" class="btn btn-danger" (click)="deleteItem($event)">Delete this item</button>
+    </p>
+    <hr/>
+  </form>
+</ng-container>
 
-<ng-container *ngTemplateOutlet="(formik.value.name || formik.value.description || formik.value.tags)
+<ng-container *ngIf="!!formik">
+  <ng-container *ngTemplateOutlet="(formik.value.name)
   && itemPreview"></ng-container>
+</ng-container>
 
 <ng-template #itemPreview>
   <h5 class="text-center">{{selectedListID ? 'Selected item preview' : 'New item preview'}}</h5>
-  <div class="basic-back list-item mb-unset d-flex p-2 mt-3">
+  <div class="basic-back list-item mb-unset d-flex p-2 mt-3" style="border: 1px solid">
     <span class="w-25 text-center span-overflow" style="border-right: 1px solid">{{formik.value.name}}</span>
     <span class="w-50 text-center span-overflow" style="border-right: 1px solid">{{formik.value.description}}</span>
     <p class="w-25 text-center span-overflow">{{formik.value.tags | tags:"|"}}</p>

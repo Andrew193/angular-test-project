@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ListItemType} from "../../list/lists/lists.component";
-import {BehaviorSubject, catchError, map, throwError} from "rxjs";
+import {BehaviorSubject, catchError, map, Subject, throwError} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
@@ -8,28 +8,29 @@ import {HttpClient} from "@angular/common/http";
 })
 export class ListService {
   private _items: ListItemType[] = [];
-  _update: BehaviorSubject<ListItemType[]> = new BehaviorSubject<ListItemType[]>(this._items);
+  _updateItems: BehaviorSubject<ListItemType[]> = new BehaviorSubject<ListItemType[]>(this._items);
 
   constructor(private http: HttpClient) {
     this.fetchItems();
   }
 
   fetchItemById(id: number) {
-    this._update.next(this._items.filter((item: ListItemType) => item.id === id))
-    return this._update;
+    return this.http.get(`/items/${id}`)
+  }
+
+  deleteItemById(id: number) {
+    return this.http.delete(`/items/${id}`)
   }
 
   fetchItems() {
     const assetsApi = 'assets/mock-items.json';
+    this.http.get('/items')
+      .subscribe((data: any) => {
+        this._items = data;
+        this._updateItems.next(this._items)
+      });
 
-    if (this._items.length === 0) {
-      this.http.get('/items')
-        .subscribe((data: any) => {
-          this._items = data;
-          this._update.next(this._items)
-        });
-    }
-    return this._update;
+    return this._updateItems;
   }
 
   testFetchItemsWithoutCover() {
@@ -46,6 +47,10 @@ export class ListService {
 
   updateItemById(newItemConfig: ListItemType, id: number) {
     this._items[id] = newItemConfig;
+  }
+
+  updateItemByIdApiCall(listItem: ListItemType) {
+    return this.http.put(`/items/${listItem.id}`, listItem)
   }
 
   getItems(): ListItemType[] {

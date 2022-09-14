@@ -1,0 +1,16 @@
+<h1 class="text-center">All your images</h1>
+
+<ng-container *appHide="galleryImages.length">
+  <p [ngStyle]="{'color':'red', 'font-size':'12px'}">This section is empty</p>
+</ng-container>
+
+<div>
+  <app-gallery-item
+    *ngFor="let file of galleryImages; let i = index"
+    [itemId]="file.parentId"
+    [imageFolderId]="file.id"
+    (expandImage)="expandImage($event)"
+  ></app-gallery-item>
+</div>
+<popup (yes)="yesPopup()" (no)="noPopup()"></popup>
+<a download #fileDownloader></a>

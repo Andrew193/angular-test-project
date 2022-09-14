@@ -1,0 +1,23 @@
+<ng-container *ngTemplateOutlet="relatedListItem.id?mainPart:loaderPart">
+</ng-container>
+
+<ng-template #loaderPart>
+  <img src="assets/img/Spinner-1s-200px.gif"/>
+</ng-template>
+
+
+<ng-template #mainPart>
+  <p class="gallery-item-information basic-back" (click)="redirectToSelectedItem()">
+    <span class="item-number">{{itemId | currency:'#':'code':'1.0'}}</span>
+    <span class="item-name">{{relatedListItem.name}}</span>
+  </p>
+
+  <div class="item-images-cover">
+    <ng-container *ngFor="let imageSrc of relatedListItem['images']; let i = index">
+      <img [lazyLoad]="imageSrc" class="gallery-preview-image" (click)="showImageInModalWindow(imageSrc, i)"
+           style="cursor: pointer"/>
+    </ng-container>
+  </div>
+</ng-template>
+
+<hr>

@@ -1,0 +1,36 @@
+/* This div design part is
+    used as an Image */
+.round {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 30px;
+  float: left;
+  font-weight: bold;
+
+  /* Change the shape according
+      to the image */
+  shape-outside: circle();
+  background-color: Green;
+  color: white;
+}
+
+.img {
+  float: left;
+  margin: 5px;
+}
+
+.img:nth-child(2n) {
+  float: right;
+}
+
+article {
+  padding-top: 75px;
+  display: inline-block;
+}
+
+p {
+  text-align: justify;
+  font-size: 22px;
+}

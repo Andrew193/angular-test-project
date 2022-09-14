@@ -1,0 +1,13 @@
+<div>
+  <div class="img-container">
+    <ng-container *ngFor="let file of fileConfig.files; let i = index">
+      <img [lazyLoad]="file" class="gallery-preview-image" (click)="deleteImage(i)"/>
+    </ng-container>
+  </div>
+  <hr>
+  <p class="d-flex-center-between" style="margin-bottom: unset;">
+    <label>{{uploadConfig.label}}</label>
+    <button type="button" class="btn btn-outline-success" (click)="fireInputOnChange()">Upload a file</button>
+  </p>
+  <input type="file" id="exampleInputFile" style="display: none;" #fileInput (change)="fileChange()">
+</div>

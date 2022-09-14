@@ -13,6 +13,16 @@
   transition: all ease 0.5s;
 }
 
+.crud-list-actions {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.crud-list-actions button {
+  flex: 1 0;
+  margin: 5px;
+}
+
 .tags span:hover {
   background: #c4fed6;
 }

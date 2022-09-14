@@ -7,7 +7,7 @@ import {ListItemType} from "../../list/lists/lists.component";
 export class ListFilterPipe implements PipeTransform {
 
   transform(list: ListItemType[], searchName: string): any {
-    if (list.length === 0 || !searchName) {
+    if (!searchName) {
       return list;
     }
 
