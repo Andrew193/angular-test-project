@@ -50,10 +50,7 @@ export class PopupService implements OnDestroy {
     //     }
     //   )
     // }).then((data) => data).catch((error) => false);
-    const modalObservable = new Observable((subscriber: Subscriber<boolean>) => {
-      this.subscriptions.push(this._isOpenedUpdater$.subscribe(() => subscriber.next(this.reaction)))
-    })
-    this.subscriptions.push(modalObservable.subscribe((data) => this.isAllowed$.next(data)));
+    this._isOpenedUpdater$.subscribe(() => this.isAllowed$.next(this.reaction))
     return this.isAllowed$.asObservable();
   }
 
